@@ -1,0 +1,69 @@
+============================================================
+video-sub 集成测试报告
+============================================================
+
+总测试数: 43
+通过: 43
+失败: 0
+跳过: 0
+错误: 0
+
+------------------------------------------------------------
+测试详情:
+------------------------------------------------------------
+  ✓ tests/test_integration.py::TestCLIHelp::test_main_help: passed
+  ✓ tests/test_integration.py::TestCLIHelp::test_version: passed
+  ✓ tests/test_integration.py::TestCLIHelp::test_recognize_help: passed
+  ✓ tests/test_integration.py::TestCLIHelp::test_translate_help: passed
+  ✓ tests/test_integration.py::TestCLIHelp::test_export_help: passed
+  ✓ tests/test_integration.py::TestCLIHelp::test_full_help: passed
+  ✓ tests/test_integration.py::TestCLIHelp::test_config_help: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_show: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_show_with_file: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_get: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_get_nested: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_get_nonexistent: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_set: passed
+  ✓ tests/test_integration.py::TestCLIConfig::test_config_reset: passed
+  ✓ tests/test_integration.py::TestCLIExport::test_export_srt_to_vtt: passed
+  ✓ tests/test_integration.py::TestCLIExport::test_export_srt_to_ass: passed
+  ✓ tests/test_integration.py::TestCLIExport::test_export_srt_to_txt: passed
+  ✓ tests/test_integration.py::TestCLIExport::test_export_srt_to_srt: passed
+  ✓ tests/test_integration.py::TestCLIExport::test_export_nonexistent_file: passed
+  ✓ tests/test_integration.py::TestCLIExport::test_export_unsupported_format: passed
+  ✓ tests/test_integration.py::TestCLIErrorHandling::test_no_command_shows_help: passed
+  ✓ tests/test_integration.py::TestCLIErrorHandling::test_verbose_flag: passed
+  ✓ tests/test_integration.py::TestCLIErrorHandling::test_log_level_flag: passed
+  ✓ tests/test_integration.py::TestExportModule::test_load_srt: passed
+  ✓ tests/test_integration.py::TestExportModule::test_load_vtt: passed
+  ✓ tests/test_integration.py::TestExportModule::test_load_ass: passed
+  ✓ tests/test_integration.py::TestExportModule::test_export_srt: passed
+  ✓ tests/test_integration.py::TestExportModule::test_export_vtt: passed
+  ✓ tests/test_integration.py::TestExportModule::test_export_ass: passed
+  ✓ tests/test_integration.py::TestExportModule::test_export_txt: passed
+  ✓ tests/test_integration.py::TestExportModule::test_export_unsupported_format: passed
+  ✓ tests/test_integration.py::TestExportModule::test_srt_to_vtt_conversion: passed
+  ✓ tests/test_integration.py::TestExportModule::test_srt_to_ass_conversion: passed
+  ✓ tests/test_integration.py::TestExportModule::test_export_utf8_encoding: passed
+  ✓ tests/test_integration.py::TestConfigModule::test_load_default_config: passed
+  ✓ tests/test_integration.py::TestConfigModule::test_load_config_from_file: passed
+  ✓ tests/test_integration.py::TestConfigModule::test_env_override: passed
+  ✓ tests/test_integration.py::TestConfigModule::test_env_override_translate_backend: passed
+  ✓ tests/test_integration.py::TestConfigModule::test_save_and_reload_config: passed
+  ✓ tests/test_integration.py::TestConfigModule::test_config_sensitive_info_masking: passed
+  ✓ tests/test_integration.py::TestFullPipeline::test_full_pipeline_mock: passed
+  ✓ tests/test_integration.py::TestFullPipeline::test_recognize_nonexistent_video: passed
+  ✓ tests/test_integration.py::TestFullPipeline::test_translate_nonexistent_subtitle: passed
+
+------------------------------------------------------------
+通过率: 43/43 (100.0%)
+============================================================
+
+修复记录:
+1. 修复 export/__init__.py 中双重转义问题（\n → \n），影响所有 SRT/VTT/ASS 加载和导出
+2. 修复 load_vtt 函数中 VTT 解析逻辑，支持 cue identifier（序号行）
+3. 修复 test_full_pipeline_mock 测试，将 subprocess 调用改为直接调用 CLI handler，使 monkeypatch 生效
+
+已知问题:
+- recognize 模块和 translation 模块尚未实现（使用 mock 验证集成链路）
+- 硬字幕烧录功能需要 ffmpeg 环境，未纳入自动化测试
